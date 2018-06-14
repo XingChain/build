@@ -8,9 +8,6 @@ LABEL maintainer="Xing Chain <dev@chainid.io>"
 RUN apk add --no-cache \
  wget \
  gpgme
- 
-RUN apt-get update
-RUN apt-get install zip unzip
 
 WORKDIR /opt/${NRS_TYPE}
 COPY resources/docker-entrypoint.sh resources/import-letsencrypt-java.sh /usr/local/bin/
