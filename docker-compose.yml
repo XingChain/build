@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+ certbot:
+  image: certbot/certbot
+  volumes:
+   - letsencrypt:/etc/letsencrypt
+  ports:
+   - "80:80"
+   - "443:443"
+ cid-node:
+  restart: always
+  build:
+   context: .
+   args:
+    NRS_TYPE: cid
+    NRS_VERSION: 1.11.13
+  ports:
+   - "6868:6868"
+   - "6789:6789"
+  environment:
+   NRS_ADDRESS: "${NRS_ADDRESS}"
+   NRS_ADMIN_PASSWORD: "${NRS_ADMIN_PASSWORD}"
+   NRS_KEYSTORE_PASSWORD: "${NRS_KEYSTORE_PASSWORD}"
+   NRS_HALLMARK: "${NRS_HALLMARK}"
+   NRS_MAX_INBOUND: 2000
+   NRS_MAX_OUTBOUND: 50
+   NRS_MAX_PUBLIC_PEERS: 20
+  volumes:
+   - keystores:/opt/cid/keystores
+   - cid_db:/opt/cid/cid_db
+   - cid_db:/opt/cid/cid_test_db
