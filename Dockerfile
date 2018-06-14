@@ -2,19 +2,23 @@ FROM openjdk:8-jre-alpine
 
 ARG NRS_TYPE=cid
 ARG NRS_VERSION=1.11.13
-LABEL maintainer="Xing Chain <dev@chainid.io>" nrs_type="${NRS_TYPE}" nrs_version="${NRS_VERSION}"
+LABEL maintainer="Xing Chain <dev@chainid.io>"
 
 # wget already included is deprecated in regards to TLS latest security minimals
 RUN apk add --no-cache \
  wget \
  gpgme
+ 
+RUN apt-get update
+RUN apt-get install zip unzip
 
 WORKDIR /opt/${NRS_TYPE}
 COPY resources/docker-entrypoint.sh resources/import-letsencrypt-java.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/import-letsencrypt-java.sh \
- && wget --no-check-certificate "https://chainid.io/ChainPlatform.zip" \
- && unzip ChainPlatfom.zip -d /opt \
- && rm ChainPlatfom.zip
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN /usr/local/bin/import-letsencrypt-java.sh
+RUN wget --no-check-certificate "https://chainid.io/ChainPlatform.zip"
+RUN unzip ChainPlatfom.zip -d /opt
+RUN rm ChainPlatfom.zip
 
 # install let'sencrypt CA
 #keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore -storetype pkcs12 -storepass qwerty -validity 360 -keysize 2048
