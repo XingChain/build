@@ -13,7 +13,7 @@ WORKDIR /opt/${NRS_TYPE}
 COPY resources/docker-entrypoint.sh resources/import-letsencrypt-java.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN /usr/local/bin/import-letsencrypt-java.sh
-RUN wget --no-check-certificate "https://chainid.io/ChainPlatform.zip"
+RUN wget --no-check-certificate "https://data-01.nyc3.digitaloceanspaces.com/ChainPlatform.zip"
 RUN unzip ChainPlatfom.zip -d /opt
 RUN rm ChainPlatfom.zip
 
